@@ -1,15 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const Recipe = require('../models/recipe');
+const Ingredient = require('../models/ingredient');
 
-// Rota para criar uma nova receita
+// Rota para criar um novo ingrediente
 router.post('/', async (req, res) => {
-  //const { title, description, ingredients, instructions } = req.body;
   try {
-    const recipe = new Recipe(req.body);
-    await recipe.save();
+    const ingredient = new Ingredient(req.body);
+    await ingredient.save();
 
-    return res.status(201).json({ recipe });
+    return res.status(201).json({ ingredient });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: 'Internal server error' });
@@ -19,8 +18,8 @@ router.post('/', async (req, res) => {
 // Rota para buscar todas as receitas
 router.get('/', async (req, res) => {
   try {
-    const recipes = await Recipe.find({});
-    res.send(recipes);
+    const ingredients = await Ingredient.find({});
+    res.send(ingredients);
   } catch (error) {
     res.status(500).send();
   }
@@ -31,13 +30,13 @@ router.get('/:id', async (req, res) => {
   const _id = req.params.id;
 
   try {
-    const recipe = await Recipe.findById(_id);
+    const ingredient = await Ingredient.findById(_id);
 
-    if (!recipe) {
+    if (!ingredient) {
       return res.status(404).send();
     }
 
-    res.send(recipe);
+    res.send(ingredient);
   } catch (error) {
     res.status(500).send();
   }
@@ -48,13 +47,13 @@ router.patch('/:id', async (req, res) => {
   const _id = req.params.id;
 
   try {
-    const recipe = await Recipe.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true });
+    const ingredient = await Ingredient.findByIdAndUpdate(_id, req.body, { new: true, runValidators: true });
 
-    if (!recipe) {
+    if (!ingredient) {
       return res.status(404).send();
     }
 
-    res.send(recipe);
+    res.send(ingredient);
   } catch (error) {
     res.status(400).send(error);
   }
@@ -65,13 +64,13 @@ router.delete('/:id', async (req, res) => {
   const _id = req.params.id;
 
   try {
-    const recipe = await Recipe.findByIdAndDelete(_id);
+    const ingredient = await Ingredient.findByIdAndDelete(_id);
 
-    if (!recipe) {
+    if (!ingredient) {
       return res.status(404).send();
     }
 
-    res.send(recipe);
+    res.send(ingredient);
   } catch (error) {
     res.status(500).send();
   }
